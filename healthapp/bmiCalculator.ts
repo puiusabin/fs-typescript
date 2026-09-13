@@ -19,6 +19,10 @@ const parseArguments = (args: string[]): BmiValues => {
 };
 
 const calculateBmi = (heightCm: number, weightKg: number): BmiCategory => {
+  if (heightCm <= 0 || weightKg <= 0) {
+    throw new Error("Height and weight must be positive numbers");
+  }
+
   const heightM = heightCm / 100;
   const bmi = weightKg / (heightM * heightM);
 
@@ -34,8 +38,10 @@ const calculateBmi = (heightCm: number, weightKg: number): BmiCategory => {
 };
 
 try {
-  const { height, weight } = parseArguments(process.argv);
-  console.log(calculateBmi(height, weight));
+  if (process.argv[1] === import.meta.filename) {
+    const { height, weight } = parseArguments(process.argv);
+    console.log(calculateBmi(height, weight));
+  }
 } catch (error: unknown) {
   let errorMessage = "Something bad happend.";
   if (error instanceof Error) {
@@ -43,3 +49,5 @@ try {
   }
   console.log(errorMessage);
 }
+
+export default calculateBmi;

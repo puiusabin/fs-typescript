@@ -1,8 +1,21 @@
 import express from "express";
+import calculateBmi from "./bmiCalculator.ts";
 const app = express();
 
 app.get("/hello", (_req, res) => {
   res.send("Hello Full Stack");
+});
+
+app.get("/bmi", (req, res) => {
+  const height: number = Number(req.query.height);
+  const weight: number = Number(req.query.weight);
+
+  if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
+    res.status(400).json({ error: "bad input" });
+    return;
+  }
+
+  res.json({ height, weight, bmi: calculateBmi(height, weight) });
 });
 
 const PORT = 3003;
