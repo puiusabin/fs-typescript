@@ -8,15 +8,15 @@ const app = express();
 app.use(express.json());
 
 app.get("/hello", (_req, res) => {
-  res.send("Hello Full Stack");
+  res.send("Hello Full Stack!");
 });
 
 app.get("/bmi", (req, res) => {
   const height: number = Number(req.query.height);
   const weight: number = Number(req.query.weight);
 
-  if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
-    res.status(400).json({ error: "bad input" });
+  if (isNaN(height) || isNaN(weight)) {
+    res.status(400).json({ error: "malformatted parameters" });
     return;
   }
 
@@ -46,7 +46,7 @@ app.post("/exercises", (req, res) => {
   return res.json(calculateExercises(validData));
 });
 
-const PORT = 3003;
+const PORT = 3000;
 
 app.listen(PORT, () => {
   console.log(`server listening on port ${PORT}`);

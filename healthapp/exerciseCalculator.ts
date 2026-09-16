@@ -55,8 +55,10 @@ export const calculateExercises = (values: ExerciseValues): Result => {
 };
 
 try {
-  const values = parseExerciseArguments(process.argv);
-  console.log(calculateExercises(values));
+  if (process.argv[1] === import.meta.filename) {
+    const values = parseExerciseArguments(process.argv);
+    console.log(calculateExercises(values));
+  }
 } catch (error: unknown) {
   let errorMessage = "Something bad happend.";
   if (error instanceof Error) {
