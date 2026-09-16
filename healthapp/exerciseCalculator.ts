@@ -8,12 +8,12 @@ interface Result {
   average: number;
 }
 
-interface ExerciseValues {
+export interface ExerciseValues {
   target: number;
   exerciseDays: number[];
 }
 
-const parseExerciseArguments = (args: string[]): ExerciseValues => {
+export const parseExerciseArguments = (args: string[]): ExerciseValues => {
   if (args.length < 4) throw new Error("Not enough arguments");
 
   const numericArgs = args.slice(2).map(Number);
@@ -25,16 +25,17 @@ const parseExerciseArguments = (args: string[]): ExerciseValues => {
   return { target, exerciseDays };
 };
 
-const calculateExercises = (exerciseDay: number[], target: number): Result => {
+export const calculateExercises = (values: ExerciseValues): Result => {
+  const { target, exerciseDays } = values;
   let trainingDays: number = 0;
   let exerciseSum = 0;
   let rating = 1;
   let ratingDescription = "really bad";
-  exerciseDay.forEach((hours) => {
+  exerciseDays.forEach((hours) => {
     if (hours > 0) trainingDays++;
     exerciseSum += hours;
   });
-  const averageTime = exerciseSum / exerciseDay.length;
+  const averageTime = exerciseSum / exerciseDays.length;
   if (averageTime >= target) {
     rating = 3;
     ratingDescription = "really good";
@@ -43,7 +44,7 @@ const calculateExercises = (exerciseDay: number[], target: number): Result => {
     ratingDescription = "not too bad but could be better";
   }
   return {
-    periodLength: exerciseDay.length,
+    periodLength: exerciseDays.length,
     trainingDays: trainingDays,
     success: averageTime > target,
     rating: rating,
@@ -54,8 +55,8 @@ const calculateExercises = (exerciseDay: number[], target: number): Result => {
 };
 
 try {
-  const { target, exerciseDays } = parseExerciseArguments(process.argv);
-  console.log(calculateExercises(exerciseDays, target));
+  const values = parseExerciseArguments(process.argv);
+  console.log(calculateExercises(values));
 } catch (error: unknown) {
   let errorMessage = "Something bad happend.";
   if (error instanceof Error) {
