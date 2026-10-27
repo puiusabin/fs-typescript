@@ -1,12 +1,16 @@
-import type { NewPatientEntry, PatientEntry } from "../types.ts";
+import type {
+  NewPatientEntry,
+  NonSensitivePatientEntry,
+  PatientEntry,
+} from "../types.ts";
 import express, { type Response, type Request } from "express";
 import patientService from "../services/patientService.ts";
 import { errorMiddleware, newPatientParser } from "../middleware.ts";
 
 const router = express.Router();
 
-router.get("/", (_req, res: Response<PatientEntry[]>) => {
-  res.send(patientService.getPatients());
+router.get("/", (_req, res: Response<NonSensitivePatientEntry[]>) => {
+  res.send(patientService.getNonSensitivePatients());
 });
 
 router.post(
