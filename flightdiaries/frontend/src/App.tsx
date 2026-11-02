@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Visibility, Weather, DiaryEntry } from "./types";
 import diaryService from "./services/diaryService";
+import axios from "axios";
 
 function App() {
   const [diaries, setDiaries] = useState<DiaryEntry[]>([]);
@@ -8,6 +9,7 @@ function App() {
   const [visibility, setVisibility] = useState("");
   const [weather, setWeather] = useState("");
   const [comment, setComment] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     diaryService.getAll().then((initialDiaries) => {
@@ -15,7 +17,7 @@ function App() {
     });
   }, []);
 
-  const diaryCreation = (event: React.SyntheticEvent) => {
+  const diaryCreation = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     const diaryToAdd = {
       date,
@@ -23,15 +25,25 @@ function App() {
       visibility: visibility as Visibility,
       comment,
     };
-    diaryService.create(diaryToAdd).then((returnedDiary) => {
+    try {
+      const returnedDiary = await diaryService.create(diaryToAdd);
       setDiaries(diaries.concat(returnedDiary));
-    });
+      setError("");
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data.error[0].message);
+      } else {
+        console.error(error);
+      }
+    }
   };
 
   return (
     <div>
       <h2>Add new diary</h2>
+
       <form onSubmit={diaryCreation}>
+        {error && <p style={{ color: "red" }}>{error}</p>}
         <div>
           <label>
             date
