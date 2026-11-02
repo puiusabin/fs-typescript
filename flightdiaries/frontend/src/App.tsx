@@ -55,24 +55,62 @@ function App() {
           </label>
         </div>
         <div>
-          <label>
-            visibility
-            <input
-              type="text"
-              value={visibility}
-              onChange={(event) => setVisibility(event.target.value)}
-            />
-          </label>
+          visibility great
+          <input
+            type="radio"
+            name="visibility "
+            onChange={() => setVisibility("great")}
+          />
+          good
+          <input
+            type="radio"
+            name="visibility "
+            onChange={() => setVisibility("good")}
+          />
+          ok
+          <input
+            type="radio"
+            name="visibility "
+            onChange={() => setVisibility("ok")}
+          />
+          poor
+          <input
+            type="radio"
+            name="visibility "
+            onChange={() => setVisibility("poor")}
+          />
         </div>
         <div>
-          <label>
-            weather
-            <input
-              type="text"
-              value={weather}
-              onChange={(event) => setWeather(event.target.value)}
-            />
-          </label>
+          weather sunny
+          <input
+            type="radio"
+            value="weather"
+            onChange={() => setWeather("sunny")}
+          />
+          rainy
+          <input
+            type="radio"
+            value="weather"
+            onChange={() => setWeather("rainy")}
+          />
+          cloudy
+          <input
+            type="radio"
+            value="weather"
+            onChange={() => setWeather("cloudy")}
+          />
+          stormy
+          <input
+            type="radio"
+            value="weather"
+            onChange={() => setWeather("stormy")}
+          />
+          windy
+          <input
+            type="radio"
+            value="weather"
+            onChange={() => setWeather("windy")}
+          />
         </div>
         <div>
           <label>
