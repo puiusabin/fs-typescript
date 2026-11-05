@@ -9,6 +9,16 @@ import { errorMiddleware, newPatientParser } from "../middleware.ts";
 
 const router = express.Router();
 
+router.get("/:id", (req, res) => {
+  const id: string = req.params.id;
+  const patient = patientService.getPatient(id);
+  if (!patient) {
+    res.status(404).send({ error: "patient not found" });
+    return;
+  }
+  res.json(patient);
+});
+
 router.get("/", (_req, res: Response<NonSensitivePatientEntry[]>) => {
   res.send(patientService.getNonSensitivePatients());
 });

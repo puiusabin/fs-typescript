@@ -8,6 +8,9 @@ export const Gender = {
 
 export type Gender = (typeof Gender)[keyof typeof Gender];
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface Entry {}
+
 export const NewPatientSchema = z.object({
   name: z.string(),
   dateOfBirth: z.iso.date(),
@@ -20,9 +23,10 @@ export type NewPatientEntry = z.infer<typeof NewPatientSchema>;
 
 export interface PatientEntry extends NewPatientEntry {
   id: string;
+  entries: Entry[];
 }
 
-export type NonSensitivePatientEntry = Omit<PatientEntry, "ssn">;
+export type NonSensitivePatientEntry = Omit<PatientEntry, "ssn" | "entries">;
 
 export interface DiagnoseEntry {
   code: string;
