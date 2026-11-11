@@ -1,14 +1,10 @@
 import { useParams } from "react-router-dom";
-import type { Patient } from "../types";
-import {
-  Divider,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from "@mui/material";
+import type { Patient } from "../../types";
+import { List, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import patientService from "../services/patients";
+import patientService from "../../services/patients";
+import { Entry } from "../../types";
+import Diagnose from "./diagnose";
 
 const PatientPage = () => {
   const id = useParams().id;
@@ -33,16 +29,14 @@ const PatientPage = () => {
       </Typography>
 
       <Typography variant="h6">Entries</Typography>
-      {patient.entries.map((entry) => (
+      {patient.entries.map((entry: Entry) => (
         <div key={entry.id}>
           <Typography variant="body1">
             {entry.date} {entry.description}
           </Typography>
           <List>
-            {entry.diagnosisCodes?.map((code) => (
-              <ListItem key={code}>
-                <ListItemText>{code}</ListItemText>
-              </ListItem>
+            {entry.diagnosisCodes?.map((code: string) => (
+              <Diagnose key={code} code={code} />
             ))}
           </List>
         </div>
