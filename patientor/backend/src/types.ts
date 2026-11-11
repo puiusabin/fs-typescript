@@ -1,5 +1,66 @@
 import { z } from "zod";
 
+// Diagnoses
+
+export interface Diagnosis {
+  code: string;
+  name: string;
+  latin?: string;
+}
+
+// Entries
+
+interface BaseEntry {
+  id: string;
+  description: string;
+  date: string;
+  specialist: string;
+  diagnosisCodes?: Array<Diagnosis["code"]>;
+}
+
+export const HealthCheckRating = {
+  Healthy: 0,
+  LowRisk: 1,
+  HighRisk: 2,
+  CriticalRisk: 3,
+} as const;
+
+export type HealthCheckRating =
+  (typeof HealthCheckRating)[keyof typeof HealthCheckRating];
+
+interface HealthCheckEntry extends BaseEntry {
+  type: "HealthCheck";
+  healthCheckRating: HealthCheckRating;
+}
+
+interface Discharge {
+  date: string;
+  criteria: string;
+}
+
+interface HospitalEntry extends BaseEntry {
+  type: "Hospital";
+  discharge: Discharge;
+}
+
+interface SickLeave {
+  startDate: string;
+  endDate: string;
+}
+
+interface OccupationalHealthcareEntry extends BaseEntry {
+  type: "OccupationalHealthcare";
+  employerName: string;
+  sickLeave?: SickLeave;
+}
+
+export type Entry =
+  | HospitalEntry
+  | OccupationalHealthcareEntry
+  | HealthCheckEntry;
+
+// Patients
+
 export const Gender = {
   Male: "male",
   Female: "female",
@@ -7,9 +68,6 @@ export const Gender = {
 } as const;
 
 export type Gender = (typeof Gender)[keyof typeof Gender];
-
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface Entry {}
 
 export const NewPatientSchema = z.object({
   name: z.string(),
@@ -19,17 +77,11 @@ export const NewPatientSchema = z.object({
   occupation: z.string(),
 });
 
-export type NewPatientEntry = z.infer<typeof NewPatientSchema>;
+export type NewPatient = z.infer<typeof NewPatientSchema>;
 
-export interface PatientEntry extends NewPatientEntry {
+export interface Patient extends NewPatient {
   id: string;
   entries: Entry[];
 }
 
-export type NonSensitivePatientEntry = Omit<PatientEntry, "ssn" | "entries">;
-
-export interface DiagnoseEntry {
-  code: string;
-  name: string;
-  latin?: string;
-}
+export type NonSensitivePatient = Omit<Patient, "ssn" | "entries">;

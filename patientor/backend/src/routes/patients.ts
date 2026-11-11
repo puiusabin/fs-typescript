@@ -1,7 +1,7 @@
 import type {
-  NewPatientEntry,
-  NonSensitivePatientEntry,
-  PatientEntry,
+  NewPatient,
+  NonSensitivePatient,
+  Patient,
 } from "../types.ts";
 import express, { type Response, type Request } from "express";
 import patientService from "../services/patientService.ts";
@@ -19,7 +19,7 @@ router.get("/:id", (req, res) => {
   res.json(patient);
 });
 
-router.get("/", (_req, res: Response<NonSensitivePatientEntry[]>) => {
+router.get("/", (_req, res: Response<NonSensitivePatient[]>) => {
   res.send(patientService.getNonSensitivePatients());
 });
 
@@ -27,11 +27,11 @@ router.post(
   "/",
   newPatientParser,
   (
-    req: Request<unknown, unknown, NewPatientEntry>,
-    res: Response<PatientEntry>,
+    req: Request<unknown, unknown, NewPatient>,
+    res: Response<Patient>,
   ) => {
-    const addedEntry = patientService.addPatient(req.body);
-    res.json(addedEntry);
+    const addedPatient = patientService.addPatient(req.body);
+    res.json(addedPatient);
   },
 );
 
