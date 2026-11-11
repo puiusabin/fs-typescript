@@ -1,6 +1,12 @@
 import { useParams } from "react-router-dom";
 import type { Patient } from "../types";
-import { Typography } from "@mui/material";
+import {
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import patientService from "../services/patients";
 
@@ -25,6 +31,22 @@ const PatientPage = () => {
       <Typography variant="body1">
         date of birth: {patient.dateOfBirth}
       </Typography>
+
+      <Typography variant="h6">Entries</Typography>
+      {patient.entries.map((entry) => (
+        <div key={entry.id}>
+          <Typography variant="body1">
+            {entry.date} {entry.description}
+          </Typography>
+          <List>
+            {entry.diagnosisCodes?.map((code) => (
+              <ListItem key={code}>
+                <ListItemText>{code}</ListItemText>
+              </ListItem>
+            ))}
+          </List>
+        </div>
+      ))}
     </div>
   );
 };

@@ -93,7 +93,7 @@ const patients: Patient[] = [
     ],
   },
   {
-    id: "d2773c6e-f723-11e9-8f0b-362b9e155667",
+    id: " ",
     name: "Matti Luukkainen",
     dateOfBirth: "1971-04-09",
     ssn: "090471-8890",
