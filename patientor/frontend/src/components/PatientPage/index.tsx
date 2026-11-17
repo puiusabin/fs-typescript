@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import patientService from "../../services/patients";
 import { Entry } from "../../types";
 import Diagnose from "./diagnose";
+import EntryDetails from "./EntryDetails";
 
 const PatientPage = () => {
   const id = useParams().id;
@@ -13,7 +14,7 @@ const PatientPage = () => {
   useEffect(() => {
     if (!id) return;
     patientService.getOne(id).then((value) => setPatient(value));
-  }, []);
+  }, [id]);
 
   console.log(patient);
   if (!patient) {
@@ -31,14 +32,7 @@ const PatientPage = () => {
       <Typography variant="h6">Entries</Typography>
       {patient.entries.map((entry: Entry) => (
         <div key={entry.id}>
-          <Typography variant="body1">
-            {entry.date} {entry.description}
-          </Typography>
-          <List>
-            {entry.diagnosisCodes?.map((code: string) => (
-              <Diagnose key={code} code={code} />
-            ))}
-          </List>
+          <EntryDetails entry={entry} key={entry.id}></EntryDetails>
         </div>
       ))}
     </div>
