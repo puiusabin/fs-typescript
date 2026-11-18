@@ -1,19 +1,19 @@
 import type { Request, Response, NextFunction } from "express";
-import { NewPatientSchema } from "./types.ts";
+import { NewEntrySchema, NewPatientSchema } from "./types.ts";
 import { z } from "zod";
 
-export const newPatientParser = (
-  req: Request,
-  _res: Response,
-  next: NextFunction,
-) => {
-  try {
-    NewPatientSchema.parse(req.body);
-    next();
-  } catch (error: unknown) {
-    next(error);
-  }
-};
+const bodyParser =
+  (schema: z.ZodType) => (req: Request, _res: Response, next: NextFunction) => {
+    try {
+      req.body = schema.parse(req.body);
+      next();
+    } catch (error: unknown) {
+      next(error);
+    }
+  };
+
+export const newPatientParser = bodyParser(NewPatientSchema);
+export const newEntryParser = bodyParser(NewEntrySchema);
 
 export const errorMiddleware = (
   error: unknown,
