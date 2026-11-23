@@ -1,6 +1,5 @@
-import { List, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import type { Entry } from "../../types";
-import Diagnose from "./diagnose";
 import { MedicalServices } from "@mui/icons-material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import WorkIcon from "@mui/icons-material/Work";
